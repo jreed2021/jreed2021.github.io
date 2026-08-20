@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medicare Provider Payment Analytics | Janessa Reed</title>
+
+    <meta name="description"
+          content="A healthcare analytics case study examining Medicare provider payment patterns, service volume, specialty differences, skewed distributions, and payment intensity.">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* --------------------------------
+           CASE STUDY PAGE
+        -------------------------------- */
+
+        .case-hero {
+            background: linear-gradient(135deg, #f7fbfc, #edf7f7);
+            padding: 90px 30px 80px;
+        }
+
+        .case-hero-inner {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 35px;
+            color: #147d80;
+            font-weight: bold;
+        }
+
+        .case-hero h1 {
+            max-width: 850px;
+            font-size: clamp(2.7rem, 6vw, 4.8rem);
+            line-height: 1.08;
+            color: #123b4a;
+            margin-bottom: 22px;
+        }
+
+        .case-subtitle {
+            max-width: 780px;
+            font-size: 1.15rem;
+            color: #536771;
+            margin-bottom: 30px;
+        }
+
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 32px;
+        }
+
+        .case-tags span {
+            background: #ffffff;
+            color: #24686b;
+            border: 1px solid #dce8e9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+        }
+
+        .case-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .case-section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-section h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .case-section h3 {
+            color: #123b4a;
+            font-size: 1.35rem;
+            margin-top: 35px;
+            margin-bottom: 12px;
+        }
+
+        .case-section p {
+            color: #586a73;
+            margin-bottom: 20px;
+            font-size: 1.03rem;
+        }
+
+        .case-alt {
+            background: #f7fafb;
+        }
+
+        .case-alt-inner {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-alt-inner h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 28px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #dfe8ea;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .metric-card strong {
+            display: block;
+            color: #147d80;
+            font-size: 1.7rem;
+            margin-bottom: 6px;
+        }
+
+        .metric-card span {
+            color: #61737b;
+            font-size: 0.9rem;
+        }
+
+        .finding {
+            padding: 28px;
+            border-left: 4px solid #147d80;
+            background: #f7fafb;
+            margin: 30px 0;
+        }
+
+        .finding strong {
+            display: block;
+            color: #123b4a;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            text-align: left;
+            padding: 14px;
+            border-bottom: 1px solid #dfe7e9;
+        }
+
+        .comparison-table th {
+            color: #123b4a;
+            background: #f1f6f7;
+        }
+
+        .comparison-table td {
+            color: #586a73;
+        }
+
+        .takeaway-box {
+            background: #123b4a;
+            color: white;
+            padding: 35px;
+            border-radius: 10px;
+            margin-top: 35px;
+        }
+
+        .takeaway-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .takeaway-box p {
+            color: #d8e5e7;
+            margin-bottom: 0;
+        }
+
+        .case-footer-links {
+            text-align: center;
+            padding: 80px 30px;
+            background: #edf7f7;
+        }
+
+        .case-footer-links h2 {
+            color: #123b4a;
+            margin-bottom: 25px;
+        }
+
+        .case-footer-links .case-buttons {
+            justify-content: center;
+        }
+
+        @media (max-width: 700px) {
+
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+
+            .case-hero {
+                padding-top: 65px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">
+                JR
+            </div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="index.html#projects">
+                        Projects
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#skills">
+                        Skills
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#about">
+                        About
+                    </a>
+                </li>
+
+                <li>
+                    <a href="index.html#contact">
+                        Contact
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- Project Hero -->
+        <section class="case-hero">
+
+            <div class="case-hero-inner">
+
+                <a href="index.html#projects"
+                   class="back-link">
+                    ← Back to Portfolio
+                </a>
+
+                <p class="eyebrow">
+                    HEALTHCARE ANALYTICS CASE STUDY
+                </p>
+
+                <h1>
+                    Medicare Provider Payment Analytics
+                </h1>
+
+                <p class="case-subtitle">
+                    Why do some Medicare providers receive substantially
+                    more in Medicare payments than others? This project
+                    explored whether provider volume, specialty, and
+                    payment intensity could help explain the differences.
+                </p>
+
+                <div class="case-tags">
+
+                    <span>Python</span>
+                    <span>Pandas</span>
+                    <span>NumPy</span>
+                    <span>Matplotlib</span>
+                    <span>Statistics</span>
+                    <span>Healthcare Analytics</span>
+
+                </div>
+
+
+                <div class="case-buttons">
+
+                    <a href="https://github.com/jreed2021/medicare-provider-payment-analysis"
+                       class="button primary-button"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View GitHub Repository
+                    </a>
+
+                    <a href="https://medium.com/@reed.janessa21/why-do-some-medicare-providers-receive-more-volume-explains-a-lot-but-not-everything-f134012d2d88"
+                       class="button secondary-button"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Read Published Analysis
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Project Overview -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                PROJECT OVERVIEW
+            </p>
+
+            <h2>
+                The Question
+            </h2>
+
+            <p>
+                Medicare payment totals vary considerably across providers.
+                At first glance, a simple explanation would be that providers
+                who see more beneficiaries or perform more services receive
+                more Medicare payments.
+            </p>
+
+            <p>
+                I wanted to determine whether volume was truly the entire
+                story. I examined whether total Medicare payments were
+                associated with provider service volume, beneficiary volume,
+                provider specialty, and the amount of Medicare payment
+                associated with each service.
+            </p>
+
+            <div class="finding">
+
+                <strong>
+                    Analytical goal
+                </strong>
+
+                Distinguish payment differences associated with delivering
+                more care from differences associated with specialty and
+                payment intensity.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Dataset -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    DATASET
+                </p>
+
+                <h2>
+                    The Analytical Sample
+                </h2>
+
+
+                <div class="metric-grid">
+
+                    <div class="metric-card">
+                        <strong>5,000</strong>
+                        <span>Medicare providers analyzed</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>87</strong>
+                        <span>Provider specialties represented</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>153</strong>
+                        <span>Median beneficiaries per provider</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>451</strong>
+                        <span>Median services per provider</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Distribution -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                FINDING 01
+            </p>
+
+            <h2>
+                Medicare Payments Were Highly Skewed
+            </h2>
+
+            <p>
+                One of the first important signals appeared when I compared
+                the average Medicare payment with the median.
+            </p>
+
+
+            <div class="metric-grid">
+
+                <div class="metric-card">
+                    <strong>$111,655.73</strong>
+                    <span>Average Medicare payment</span>
+                </div>
+
+                <div class="metric-card">
+                    <strong>$30,645.92</strong>
+                    <span>Median Medicare payment</span>
+                </div>
+
+                <div class="metric-card">
+                    <strong>$997,573.34</strong>
+                    <span>99th percentile payment</span>
+                </div>
+
+            </div>
+
+
+            <p style="margin-top:30px;">
+                The average was approximately 3.6 times the median,
+                indicating that unusually large payment values were pulling
+                the mean upward. The distribution was strongly right-skewed,
+                so the median provided a better description of the typical
+                provider than the average alone.
+            </p>
+
+            <p>
+                Approximately 99% of providers had total Medicare payments
+                at or below $997,573.34. Only 50 providers in the
+                5,000-provider sample were above that threshold.
+            </p>
+
+
+            <div class="finding">
+
+                <strong>
+                    Why I used logarithmic visualization
+                </strong>
+
+                Payment values ranged from relatively small amounts to more
+                than $123 million. A traditional linear histogram compressed
+                most providers into one area. Logarithmically spaced bins
+                allowed the underlying distribution to remain visible without
+                deleting the extreme observations.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Correlation -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    FINDING 02
+                </p>
+
+                <h2>
+                    Service Volume Had the Strongest Association With Payment
+                </h2>
+
+
+                <div class="metric-grid">
+
+                    <div class="metric-card">
+                        <strong>0.256</strong>
+                        <span>Pearson: services vs. payments</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>0.887</strong>
+                        <span>Spearman: services vs. payments</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>0.813</strong>
+                        <span>Spearman: beneficiaries vs. payments</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>0.751</strong>
+                        <span>Spearman: beneficiaries vs. services</span>
+                    </div>
+
+                </div>
+
+
+                <p style="margin-top:30px;">
+                    Pearson correlation suggested only a weak positive
+                    linear relationship between total services and total
+                    Medicare payments.
+                </p>
+
+                <p>
+                    However, both variables were highly skewed and the
+                    relationship was not well represented by one straight
+                    line. Spearman correlation, which compares ranked values,
+                    showed a very strong positive association of 0.887.
+                </p>
+
+                <div class="finding">
+
+                    <strong>
+                        Interpretation
+                    </strong>
+
+                    Providers that ranked higher in service volume generally
+                    also ranked higher in total Medicare payments. This was
+                    an association, not evidence that service volume alone
+                    caused higher payments.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Specialty -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                FINDING 03
+            </p>
+
+            <h2>
+                Provider Specialty Also Mattered
+            </h2>
+
+            <p>
+                I grouped providers by specialty and compared median Medicare
+                payments. Before interpreting the rankings, I checked how many
+                providers represented each specialty.
+            </p>
+
+            <p>
+                Several initially high-ranking categories contained only one,
+                two, or three providers. To avoid allowing extremely small
+                groups to dominate the comparison, I required at least
+                10 providers per specialty for the final descriptive ranking.
+            </p>
+
+
+            <table class="comparison-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Finding</th>
+                        <th>Result</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            Highest median total payment
+                        </td>
+
+                        <td>
+                            Ambulatory Surgical Centers — $764,227.66
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Highest median payment per service
+                        </td>
+
+                        <td>
+                            Ambulatory Surgical Centers — $658.70
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Second-highest median payment per service
+                        </td>
+
+                        <td>
+                            Neurosurgery — approximately $227.68
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Selected procedure-heavy specialties
+                        </td>
+
+                        <td>
+                            Median total payment — $74,582.77
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Selected primary-care specialties
+                        </td>
+
+                        <td>
+                            Median total payment — $35,325.46
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <p>
+                The procedure-heavy comparison was descriptive. It showed a
+                difference in this sample, but it did not establish that
+                performing procedures caused higher Medicare reimbursement.
+            </p>
+
+        </section>
+
+
+
+        <!-- Payment intensity -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    FINDING 04
+                </p>
+
+                <h2>
+                    Volume Was Not the Entire Story
+                </h2>
+
+                <p>
+                    Total payment can rise simply because a provider delivers
+                    more services. To separate volume from payment intensity,
+                    I created normalized measures including Medicare payment
+                    per beneficiary and Medicare payment per service.
+                </p>
+
+                <p>
+                    If volume explained everything, payment per service would
+                    be relatively similar across specialties. Instead, the
+                    analysis showed substantial specialty-level differences.
+                </p>
+
+
+                <div class="takeaway-box">
+
+                    <h3>
+                        Two components emerged
+                    </h3>
+
+                    <p>
+                        Higher Medicare payment totals appeared to reflect both
+                        how much care a provider delivered and the payment
+                        intensity associated with the type of care being
+                        delivered.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Upper 1% -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                FINDING 05
+            </p>
+
+            <h2>
+                What Made the Highest-Payment Providers Different?
+            </h2>
+
+            <p>
+                I compared the typical provider in the full sample with the
+                50 providers above the 99th-percentile payment threshold.
+            </p>
+
+
+            <table class="comparison-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Measure</th>
+                        <th>Full Sample Median</th>
+                        <th>Upper 1% Median</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Beneficiaries</td>
+                        <td>153</td>
+                        <td>740.5</td>
+                    </tr>
+
+                    <tr>
+                        <td>Services</td>
+                        <td>451</td>
+                        <td>19,846</td>
+                    </tr>
+
+                    <tr>
+                        <td>Total Medicare Payment</td>
+                        <td>$30,645.92</td>
+                        <td>Approximately $1.73 million</td>
+                    </tr>
+
+                    <tr>
+                        <td>Payment per Beneficiary</td>
+                        <td>Approximately $188.68</td>
+                        <td>Approximately $2,625</td>
+                    </tr>
+
+                    <tr>
+                        <td>Payment per Service</td>
+                        <td>Approximately $66.48</td>
+                        <td>Approximately $100.67</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <p>
+                The upper 1% differed from the typical provider in both
+                volume and payment intensity. This reinforced the idea that
+                extremely high Medicare payment totals did not have one
+                universal explanation.
+            </p>
+
+        </section>
+
+
+
+        <!-- Outlier handling -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    ANALYTICAL DECISION
+                </p>
+
+                <h2>
+                    Investigating Outliers Instead of Automatically Removing Them
+                </h2>
+
+                <p>
+                    The largest total Medicare payment in the sample was
+                    approximately $123 million. Because the observation was
+                    extreme, I investigated the record rather than immediately
+                    deleting it.
+                </p>
+
+                <p>
+                    I reviewed the related beneficiary, service, payment-per-
+                    beneficiary, and payment-per-service values. I did not have
+                    evidence that the observation was a data-entry error, so I
+                    retained it.
+                </p>
+
+                <div class="finding">
+
+                    <strong>
+                        Analytical principle
+                    </strong>
+
+                    An outlier is a reason to investigate a record, not
+                    automatically a reason to remove it. Robust statistics and
+                    logarithmic visualizations allowed the extreme observation
+                    to remain in the analysis without hiding the broader pattern.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Conclusion -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                CONCLUSION
+            </p>
+
+            <h2>
+                Volume Explains a Lot — But Not Everything
+            </h2>
+
+            <p>
+                The strongest finding from the analysis was that provider
+                volume, particularly service volume, was strongly associated
+                with total Medicare payments.
+            </p>
+
+            <p>
+                However, specialty-level differences and variation in payment
+                per service showed that volume alone could not explain every
+                payment difference.
+            </p>
+
+            <p>
+                The descriptive evidence suggested that Medicare payment
+                patterns reflect a combination of how much care providers
+                deliver and the type or payment intensity of that care.
+            </p>
+
+
+            <div class="takeaway-box">
+
+                <h3>
+                    Main takeaway
+                </h3>
+
+                <p>
+                    Finding a statistical pattern is only the beginning.
+                    Additional information on procedure mix, patient complexity,
+                    geography, reimbursement policy, and case mix would be
+                    needed to better understand why those payment differences
+                    exist.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Project Links -->
+        <section class="case-footer-links">
+
+            <p class="eyebrow">
+                EXPLORE THE PROJECT
+            </p>
+
+            <h2>
+                See the full analysis
+            </h2>
+
+            <div class="case-buttons">
+
+                <a href="https://github.com/jreed2021/medicare-provider-payment-analysis"
+                   class="button primary-button"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    GitHub Repository
+                </a>
+
+                <a href="https://medium.com/@reed.janessa21/why-do-some-medicare-providers-receive-more-volume-explains-a-lot-but-not-everything-f134012d2d88"
+                   class="button secondary-button"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Published Article
+                </a>
+
+                <a href="index.html#projects"
+                   class="button secondary-button">
+                    Back to Projects
+                </a>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Janessa Reed | Data Analytics Portfolio
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
