@@ -14,10 +14,6 @@
 
     <style>
 
-        /* --------------------------------
-           CASE STUDY PAGE
-        -------------------------------- */
-
         .case-hero {
             background: linear-gradient(135deg, #f7fbfc, #edf7f7);
             padding: 90px 30px 80px;
@@ -174,6 +170,31 @@
             color: #586a73;
         }
 
+        .visual-block {
+            margin: 38px 0 42px;
+        }
+
+        .visual-block img {
+            display: block;
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid #dde6e9;
+            box-shadow: 0 12px 30px rgba(18, 59, 74, 0.08);
+            background: white;
+        }
+
+        .visual-caption {
+            max-width: 850px;
+            margin: 14px auto 0;
+            color: #6a7c84;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
         .takeaway-box {
             background: #123b4a;
             color: white;
@@ -226,7 +247,6 @@
 
 <body>
 
-    <!-- Navigation -->
     <header>
 
         <nav class="navbar">
@@ -271,7 +291,7 @@
     <main>
 
 
-        <!-- Project Hero -->
+        <!-- HERO -->
         <section class="case-hero">
 
             <div class="case-hero-inner">
@@ -332,7 +352,7 @@
 
 
 
-        <!-- Project Overview -->
+        <!-- OVERVIEW -->
         <section class="case-section">
 
             <p class="eyebrow">
@@ -374,7 +394,7 @@
 
 
 
-        <!-- Dataset -->
+        <!-- DATASET -->
         <section class="case-alt">
 
             <div class="case-alt-inner">
@@ -418,7 +438,7 @@
 
 
 
-        <!-- Distribution -->
+        <!-- FINDING 1 -->
         <section class="case-section">
 
             <p class="eyebrow">
@@ -455,7 +475,21 @@
             </div>
 
 
-            <p style="margin-top:30px;">
+            <div class="visual-block">
+
+                <img src="figure1_payment_distribution.png"
+                     alt="Distribution of total Medicare payments using logarithmically spaced bins">
+
+                <p class="visual-caption">
+                    Distribution of Total Medicare Payments. A logarithmic
+                    approach makes the highly right-skewed payment distribution
+                    visible while retaining extreme provider values.
+                </p>
+
+            </div>
+
+
+            <p>
                 The average was approximately 3.6 times the median,
                 indicating that unusually large payment values were pulling
                 the mean upward. The distribution was strongly right-skewed,
@@ -476,11 +510,11 @@
                     Why I used logarithmic visualization
                 </strong>
 
-                Payment values ranged from relatively small amounts to more
-                than $123 million. A traditional linear histogram compressed
-                most providers into one area. Logarithmically spaced bins
-                allowed the underlying distribution to remain visible without
-                deleting the extreme observations.
+                Payment values ranged from relatively small amounts to very
+                large totals. A traditional linear histogram compressed most
+                providers into one area. Logarithmically spaced bins allowed
+                the underlying distribution to remain visible without deleting
+                the extreme observations.
 
             </div>
 
@@ -488,7 +522,7 @@
 
 
 
-        <!-- Correlation -->
+        <!-- FINDING 2 -->
         <section class="case-alt">
 
             <div class="case-alt-inner">
@@ -527,7 +561,21 @@
                 </div>
 
 
-                <p style="margin-top:30px;">
+                <div class="visual-block">
+
+                    <img src="figure3_services_vs_payments.png"
+                         alt="Scatterplot showing total services versus total Medicare payments on logarithmic axes">
+
+                    <p class="visual-caption">
+                        Total Services vs. Total Medicare Payments. The log-log
+                        scatterplot reveals a strong monotonic relationship that
+                        is not well summarized by Pearson correlation alone.
+                    </p>
+
+                </div>
+
+
+                <p>
                     Pearson correlation suggested only a weak positive
                     linear relationship between total services and total
                     Medicare payments.
@@ -559,7 +607,7 @@
 
 
 
-        <!-- Specialty -->
+        <!-- FINDING 3 -->
         <section class="case-section">
 
             <p class="eyebrow">
@@ -582,6 +630,20 @@
                 groups to dominate the comparison, I required at least
                 10 providers per specialty for the final descriptive ranking.
             </p>
+
+
+            <div class="visual-block">
+
+                <img src="figure2_specialty_median_payments.png"
+                     alt="Top 10 specialties by median Medicare payment">
+
+                <p class="visual-caption">
+                    Top 10 Specialties by Median Medicare Payment. Specialty
+                    rankings were filtered to groups with sufficient provider
+                    counts to reduce instability from very small samples.
+                </p>
+
+            </div>
 
 
             <table class="comparison-table">
@@ -662,7 +724,7 @@
 
 
 
-        <!-- Payment intensity -->
+        <!-- FINDING 4 -->
         <section class="case-alt">
 
             <div class="case-alt-inner">
@@ -689,6 +751,21 @@
                 </p>
 
 
+                <div class="visual-block">
+
+                    <img src="figure4_payment_per_service.png"
+                         alt="Top 10 specialties by median Medicare payment per service">
+
+                    <p class="visual-caption">
+                        Top 10 Specialties by Median Payment per Service.
+                        Normalizing payment by service volume helps separate
+                        how much care was delivered from the payment intensity
+                        associated with that care.
+                    </p>
+
+                </div>
+
+
                 <div class="takeaway-box">
 
                     <h3>
@@ -710,7 +787,7 @@
 
 
 
-        <!-- Upper 1% -->
+        <!-- FINDING 5 -->
         <section class="case-section">
 
             <p class="eyebrow">
@@ -787,7 +864,7 @@
 
 
 
-        <!-- Outlier handling -->
+        <!-- OUTLIER -->
         <section class="case-alt">
 
             <div class="case-alt-inner">
@@ -802,9 +879,9 @@
 
                 <p>
                     The largest total Medicare payment in the sample was
-                    approximately $123 million. Because the observation was
-                    extreme, I investigated the record rather than immediately
-                    deleting it.
+                    extremely high relative to the typical provider. Because
+                    the observation was extreme, I investigated the record
+                    rather than immediately deleting it.
                 </p>
 
                 <p>
@@ -833,7 +910,7 @@
 
 
 
-        <!-- Conclusion -->
+        <!-- CONCLUSION -->
         <section class="case-section">
 
             <p class="eyebrow">
@@ -883,7 +960,7 @@
 
 
 
-        <!-- Project Links -->
+        <!-- LINKS -->
         <section class="case-footer-links">
 
             <p class="eyebrow">
@@ -935,3 +1012,4 @@
 </body>
 
 </html>
+            
