@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dropout & Retention Analysis | Janessa Reed</title>
+
+    <meta name="description"
+          content="An education analytics case study exploring student dropout and retention patterns using demographic, academic, financial, and socioeconomic data.">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .case-hero {
+            background: linear-gradient(135deg, #f7fbfc, #edf7f7);
+            padding: 90px 30px 80px;
+        }
+
+        .case-hero-inner {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 35px;
+            color: #147d80;
+            font-weight: bold;
+        }
+
+        .case-hero h1 {
+            max-width: 850px;
+            font-size: clamp(2.7rem, 6vw, 4.8rem);
+            line-height: 1.08;
+            color: #123b4a;
+            margin-bottom: 22px;
+        }
+
+        .case-subtitle {
+            max-width: 800px;
+            font-size: 1.15rem;
+            color: #536771;
+            margin-bottom: 30px;
+        }
+
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 32px;
+        }
+
+        .case-tags span {
+            background: #ffffff;
+            color: #24686b;
+            border: 1px solid #dce8e9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+        }
+
+        .case-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .case-section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-section h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .case-section h3 {
+            color: #123b4a;
+            font-size: 1.35rem;
+            margin-top: 35px;
+            margin-bottom: 12px;
+        }
+
+        .case-section p {
+            color: #586a73;
+            margin-bottom: 20px;
+            font-size: 1.03rem;
+        }
+
+        .case-alt {
+            background: #f7fafb;
+        }
+
+        .case-alt-inner {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-alt-inner h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 28px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #dfe8ea;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .metric-card strong {
+            display: block;
+            color: #147d80;
+            font-size: 1.7rem;
+            margin-bottom: 6px;
+        }
+
+        .metric-card span {
+            color: #61737b;
+            font-size: 0.9rem;
+        }
+
+        .finding {
+            padding: 28px;
+            border-left: 4px solid #147d80;
+            background: #f7fafb;
+            margin: 30px 0;
+        }
+
+        .finding strong {
+            display: block;
+            color: #123b4a;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .visual-block {
+            margin: 38px 0 42px;
+        }
+
+        .visual-block img {
+            display: block;
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid #dde6e9;
+            box-shadow: 0 12px 30px rgba(18, 59, 74, 0.08);
+            background: white;
+        }
+
+        .visual-caption {
+            max-width: 850px;
+            margin: 14px auto 0;
+            color: #6a7c84;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .takeaway-box {
+            background: #123b4a;
+            color: white;
+            padding: 35px;
+            border-radius: 10px;
+            margin-top: 35px;
+        }
+
+        .takeaway-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .takeaway-box p {
+            color: #d8e5e7;
+            margin-bottom: 0;
+        }
+
+        .case-footer-links {
+            text-align: center;
+            padding: 80px 30px;
+            background: #edf7f7;
+        }
+
+        .case-footer-links h2 {
+            color: #123b4a;
+            margin-bottom: 25px;
+        }
+
+        .case-footer-links .case-buttons {
+            justify-content: center;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">JR</div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="index.html#projects">Projects</a>
+                </li>
+
+                <li>
+                    <a href="index.html#skills">Skills</a>
+                </li>
+
+                <li>
+                    <a href="index.html#about">About</a>
+                </li>
+
+                <li>
+                    <a href="index.html#contact">Contact</a>
+                </li>
+
+            </ul>
+
+        </nav>
+    </header>
+
+
+    <main>
+
+
+        <!-- HERO -->
+        <section class="case-hero">
+
+            <div class="case-hero-inner">
+
+                <a href="index.html#projects"
+                   class="back-link">
+                    ← Back to Portfolio
+                </a>
+
+                <p class="eyebrow">
+                    EDUCATION ANALYTICS CASE STUDY
+                </p>
+
+                <h1>
+                    Student Dropout & Retention Analysis
+                </h1>
+
+                <p class="case-subtitle">
+                    What patterns distinguish students who graduate from those
+                    who drop out or remain enrolled? This exploratory analysis
+                    examined academic, financial, demographic, and broader
+                    socioeconomic characteristics associated with student outcomes.
+                </p>
+
+                <div class="case-tags">
+
+                    <span>Python</span>
+                    <span>Pandas</span>
+                    <span>Data Visualization</span>
+                    <span>EDA</span>
+                    <span>Statistics</span>
+                    <span>Education Analytics</span>
+
+                </div>
+
+
+                <div class="case-buttons">
+
+                    <a href="https://github.com/jreed2021/student-dropout-analysis"
+                       class="button primary-button"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View GitHub Repository
+                    </a>
+
+                    <a href="https://substack.com/home/post/p-208876936"
+                       class="button secondary-button"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Read Published Analysis
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- OVERVIEW -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                PROJECT OVERVIEW
+            </p>
+
+            <h2>
+                The Question
+            </h2>
+
+            <p>
+                Student dropout is rarely explained by one variable alone.
+                Academic progress, financial strain, personal circumstances,
+                and broader economic conditions can all appear alongside
+                differences in student outcomes.
+            </p>
+
+            <p>
+                I used exploratory data analysis to compare patterns among
+                students classified as graduates, dropouts, or still enrolled.
+                The goal was not to claim that any single characteristic caused
+                a student to leave school, but to identify patterns that could
+                support deeper investigation and earlier intervention.
+            </p>
+
+            <div class="finding">
+
+                <strong>
+                    Analytical goal
+                </strong>
+
+                Identify meaningful differences across student outcome groups
+                while separating strong student-level signals from broader
+                contextual variables that require more cautious interpretation.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DATASET -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    DATASET
+                </p>
+
+                <h2>
+                    The Analytical Sample
+                </h2>
+
+
+                <div class="metric-grid">
+
+                    <div class="metric-card">
+                        <strong>4,424</strong>
+                        <span>Student records</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>36</strong>
+                        <span>Predictor variables</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>3</strong>
+                        <span>Outcome classes</span>
+                    </div>
+
+                    <div class="metric-card">
+                        <strong>Graduate / Dropout / Enrolled</strong>
+                        <span>Target outcomes</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FINDING 1 -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                FINDING 01
+            </p>
+
+            <h2>
+                The Outcome Classes Were Not Evenly Distributed
+            </h2>
+
+            <p>
+                Before comparing predictors, I first examined the distribution
+                of the target variable. Understanding how many students were in
+                each outcome category was important because class imbalance can
+                affect both interpretation and predictive modeling.
+            </p>
+
+
+            <div class="visual-block">
+
+                <img src="outcome_distribution.png"
+                     alt="Distribution of student outcome categories">
+
+                <p class="visual-caption">
+                    Student outcome distribution across the Graduate, Dropout,
+                    and Enrolled categories.
+                </p>
+
+            </div>
+
+
+            <div class="finding">
+
+                <strong>
+                    Why this matters
+                </strong>
+
+                Raw counts and percentages can tell different stories when
+                group sizes differ. For retention analysis, the denominator
+                matters: comparisons should be based on outcome proportions,
+                not just the number of students in each category.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FINDING 2 -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    FINDING 02
+                </p>
+
+                <h2>
+                    Tuition Status Showed a Clear Outcome Pattern
+                </h2>
+
+                <p>
+                    Whether tuition fees were up to date was one of the more
+                    meaningful financial indicators in the analysis.
+                </p>
+
+                <p>
+                    Students with unresolved tuition obligations showed a
+                    less favorable outcome pattern than students whose tuition
+                    status was current.
+                </p>
+
+
+                <div class="visual-block">
+
+                    <img src="tuition_status.png"
+                         alt="Student outcomes by tuition fee status">
+
+                    <p class="visual-caption">
+                        Student outcomes by tuition status. The comparison
+                        highlights how financial standing may coincide with
+                        different retention and graduation patterns.
+                    </p>
+
+                </div>
+
+
+                <div class="finding">
+
+                    <strong>
+                        Interpretation
+                    </strong>
+
+                    Tuition status may act as a marker of financial stress or
+                    academic disruption, but this descriptive relationship
+                    should not be interpreted as proof that unpaid tuition
+                    directly causes dropout.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FINDING 3 -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                FINDING 03
+            </p>
+
+            <h2>
+                Debtor Status Was Also Associated With Student Outcomes
+            </h2>
+
+            <p>
+                Debtor status provided another way to examine financial strain.
+                Students classified as debtors showed a different distribution
+                of outcomes compared with students who were not debtors.
+            </p>
+
+
+            <div class="visual-block">
+
+                <img src="debtor_status.png"
+                     alt="Student outcomes by debtor status">
+
+                <p class="visual-caption">
+                    Student outcomes by debtor status. Financial vulnerability
+                    appeared alongside less favorable educational outcomes in
+                    this sample.
+                </p>
+
+            </div>
+
+
+            <p>
+                Tuition status and debtor status should not be interpreted in
+                isolation. They may overlap with employment conditions, family
+                resources, prior academic preparation, and other factors that
+                were not fully controlled in this exploratory analysis.
+            </p>
+
+        </section>
+
+
+
+        <!-- FINDING 4 -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    FINDING 04
+                </p>
+
+                <h2>
+                    Academic Performance Provided One of the Strongest Signals
+                </h2>
+
+                <p>
+                    Early academic performance was especially informative.
+                    Differences in curricular performance appeared more directly
+                    connected to the student's educational trajectory than many
+                    of the broader socioeconomic variables.
+                </p>
+
+
+                <div class="visual-block">
+
+                    <img src="academic_performance.png"
+                         alt="Academic performance patterns across student outcomes">
+
+                    <p class="visual-caption">
+                        Academic performance across student outcome groups.
+                        Early progress provides an important signal for identifying
+                        students who may need additional academic support.
+                    </p>
+
+                </div>
+
+
+                <div class="takeaway-box">
+
+                    <h3>
+                        Practical implication
+                    </h3>
+
+                    <p>
+                        Financial risk indicators can help identify students
+                        facing structural barriers, while academic performance
+                        can provide a more immediate signal that intervention
+                        may be needed during the student's educational journey.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- OTHER VARIABLES -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                ADDITIONAL VARIABLES
+            </p>
+
+            <h2>
+                Demographic and Economic Context Required More Caution
+            </h2>
+
+            <p>
+                I also explored characteristics such as age, occupation,
+                scholarship status, unemployment, and inflation.
+            </p>
+
+            <p>
+                These variables are useful for understanding the environment in
+                which students are studying, but they do not all operate at the
+                same analytical level.
+            </p>
+
+            <p>
+                For example, age and scholarship status describe individual
+                students, while unemployment and inflation describe broader
+                economic conditions. A national or regional economic indicator
+                cannot automatically explain why one individual student dropped out.
+            </p>
+
+
+            <div class="finding">
+
+                <strong>
+                    Important statistical distinction
+                </strong>
+
+                A relationship observed at the population or economic level
+                should not automatically be attributed to an individual student.
+                This is one reason contextual variables such as unemployment
+                and inflation should be interpreted carefully.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- METHOD -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    ANALYTICAL APPROACH
+                </p>
+
+                <h2>
+                    From Raw Variables to Interpretable Patterns
+                </h2>
+
+                <p>
+                    The project relied primarily on exploratory data analysis
+                    and grouped comparisons.
+                </p>
+
+                <p>
+                    I examined the target distribution, compared outcome
+                    proportions across categorical variables, evaluated
+                    student-level and contextual characteristics, and used
+                    visualizations to communicate where meaningful differences
+                    appeared.
+                </p>
+
+                <p>
+                    This approach was appropriate because the objective was to
+                    understand patterns before making stronger predictive or
+                    causal claims.
+                </p>
+
+                <div class="finding">
+
+                    <strong>
+                        Analytical principle
+                    </strong>
+
+                    Exploratory analysis helps determine which questions deserve
+                    deeper investigation. It identifies associations and patterns,
+                    but it does not establish causality on its own.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LIMITATIONS -->
+        <section class="case-section">
+
+            <p class="eyebrow">
+                LIMITATIONS
+            </p>
+
+            <h2>
+                What This Analysis Cannot Tell Us
+            </h2>
+
+            <p>
+                The project was observational and exploratory. The relationships
+                identified in the data should therefore be treated as
+                associations rather than causal effects.
+            </p>
+
+            <p>
+                Variables such as tuition status, debtor status, age,
+                scholarship support, occupation, unemployment, and inflation
+                can also interact with one another.
+            </p>
+
+            <p>
+                A more advanced analysis could use multivariable modeling,
+                validation data, and additional institutional or student-level
+                information to determine which predictors remain important
+                after accounting for other factors.
+            </p>
+
+        </section>
+
+
+
+        <!-- CONCLUSION -->
+        <section class="case-alt">
+
+            <div class="case-alt-inner">
+
+                <p class="eyebrow">
+                    CONCLUSION
+                </p>
+
+                <h2>
+                    Retention Appears to Be Both Academic and Structural
+                </h2>
+
+                <p>
+                    The analysis suggested that student outcomes were connected
+                    to multiple dimensions of the student experience.
+                </p>
+
+                <p>
+                    Academic progress provided an important direct signal,
+                    while tuition and debtor status highlighted the potential
+                    role of financial barriers.
+                </p>
+
+                <p>
+                    Broader demographic and economic characteristics added
+                    context, but required more careful interpretation because
+                    association does not establish individual-level causation.
+                </p>
+
+
+                <div class="takeaway-box">
+
+                    <h3>
+                        Main takeaway
+                    </h3>
+
+                    <p>
+                        Student retention should not be reduced to a single
+                        predictor. The strongest analytical approach combines
+                        academic performance, financial vulnerability, and
+                        student context to identify where support may be most useful.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LINKS -->
+        <section class="case-footer-links">
+
+            <p class="eyebrow">
+                EXPLORE THE PROJECT
+            </p>
+
+            <h2>
+                See the full analysis
+            </h2>
+
+
+            <div class="case-buttons">
+
+                <a href="https://github.com/jreed2021/student-dropout-analysis"
+                   class="button primary-button"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    GitHub Repository
+                </a>
+
+                <a href="https://substack.com/home/post/p-208876936"
+                   class="button secondary-button"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Published Article
+                </a>
+
+                <a href="index.html#projects"
+                   class="button secondary-button">
+                    Back to Projects
+                </a>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Janessa Reed | Data Analytics Portfolio
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
