@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CMS Medical Care Ratings vs Enrollee Experience | Janessa Reed</title>
+<meta content="Healthcare analytics case study comparing CMS Marketplace Medical Care ratings with enrollee-reported health plan experience using Python, MySQL, and Tableau." name="description"/>
+<link href="style.css" rel="stylesheet"/>
+<!-- Original stylesheet embedded for reliable ZIP previews. -->
+<style id="portfolio-style-fallback">
+/* ------------------------------
+   BASE STYLES
+-------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #17252f;
+    line-height: 1.7;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* ------------------------------
+   NAVIGATION
+-------------------------------- */
+
+header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5ecef;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    max-width: 1150px;
+    margin: auto;
+    padding: 18px 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    background: #123b4a;
+    color: white;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    font-size: 0.95rem;
+    color: #40545e;
+}
+
+.nav-links a:hover {
+    color: #147d80;
+}
+
+
+/* ------------------------------
+   HERO
+-------------------------------- */
+
+.hero {
+    min-height: 78vh;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7fbfc,
+            #edf7f7
+        );
+}
+
+.hero-content {
+    max-width: 1050px;
+    width: 100%;
+    margin: auto;
+    padding: 90px 30px;
+}
+
+.eyebrow {
+    font-size: 0.78rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    color: #147d80;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+
+    color: #123b4a;
+
+    margin-bottom: 20px;
+}
+
+.hero h2 {
+    max-width: 750px;
+
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+    font-weight: 500;
+
+    margin-bottom: 22px;
+}
+
+.hero-description {
+    max-width: 720px;
+
+    font-size: 1.08rem;
+    color: #536771;
+
+    margin-bottom: 35px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.button {
+    display: inline-block;
+
+    padding: 13px 22px;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+}
+
+.primary-button {
+    background: #123b4a;
+    color: white;
+}
+
+.primary-button:hover {
+    background: #0e303c;
+}
+
+.secondary-button {
+    border: 1px solid #123b4a;
+    color: #123b4a;
+}
+
+.secondary-button:hover {
+    background: #eef5f6;
+}
+
+
+/* ------------------------------
+   GENERAL SECTIONS
+-------------------------------- */
+
+.section {
+    max-width: 1150px;
+    margin: auto;
+    padding: 100px 30px;
+}
+
+.alternate-section {
+    max-width: none;
+
+    padding-left: max(30px, calc((100% - 1090px) / 2));
+    padding-right: max(30px, calc((100% - 1090px) / 2));
+
+    background: #f7fafb;
+}
+
+.section-heading {
+    max-width: 680px;
+    margin-bottom: 50px;
+}
+
+.section-heading h2,
+.about-grid h2,
+.contact-section h2 {
+    font-size: 2.3rem;
+    color: #123b4a;
+    margin-bottom: 14px;
+}
+
+.section-heading p {
+    color: #64757d;
+}
+
+
+/* ------------------------------
+   PROJECTS
+-------------------------------- */
+
+.project-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 30px;
+}
+
+.project-card {
+    border: 1px solid #dde6e9;
+
+    border-radius: 10px;
+
+    padding: 35px;
+
+    background: white;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 14px 35px rgba(18, 59, 74, 0.08);
+}
+
+.project-number {
+    color: #9eb7bb;
+    font-size: 0.85rem;
+
+    margin-bottom: 25px;
+}
+
+.project-category {
+    color: #147d80;
+
+    font-weight: bold;
+    font-size: 0.85rem;
+
+    margin-bottom: 8px;
+}
+
+.project-card h3 {
+    font-size: 1.55rem;
+
+    color: #123b4a;
+
+    margin-bottom: 18px;
+}
+
+.project-card > p {
+    color: #5a6d76;
+}
+
+.project-tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin: 22px 0;
+}
+
+.project-tags span {
+    background: #edf7f7;
+
+    color: #24686b;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 0.78rem;
+}
+
+.project-insight {
+    background: #f7fafb;
+
+    padding: 15px;
+
+    border-left: 3px solid #147d80;
+
+    font-size: 0.9rem;
+
+    margin: 20px 0;
+}
+
+.project-links {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-top: 25px;
+}
+
+.project-links a {
+    color: #147d80;
+
+    font-weight: bold;
+
+    font-size: 0.9rem;
+}
+
+.project-links a:hover {
+    text-decoration: underline;
+}
+
+
+/* ------------------------------
+   SKILLS
+-------------------------------- */
+
+.skills-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(210px, 1fr));
+
+    gap: 35px;
+}
+
+.skill-group h3 {
+    color: #123b4a;
+
+    margin-bottom: 14px;
+}
+
+.skill-group p {
+    color: #60737b;
+
+    margin-bottom: 6px;
+}
+
+
+/* ------------------------------
+   ABOUT
+-------------------------------- */
+
+.about-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1.5fr;
+
+    gap: 70px;
+
+    align-items: start;
+}
+
+.about-text p {
+    margin-bottom: 22px;
+
+    color: #586a73;
+
+    font-size: 1.04rem;
+}
+
+
+/* ------------------------------
+   CONTACT
+-------------------------------- */
+
+.contact-section {
+    text-align: center;
+
+    padding: 100px 30px;
+
+    background: #123b4a;
+
+    color: white;
+}
+
+.contact-section .eyebrow {
+    color: #7ed0ce;
+}
+
+.contact-section h2 {
+    color: white;
+}
+
+.contact-section > p {
+    max-width: 600px;
+
+    margin: auto;
+
+    color: #d4e2e5;
+}
+
+.contact-links {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 25px;
+
+    margin-top: 35px;
+}
+
+.contact-links a {
+    color: white;
+
+    font-weight: bold;
+
+    border-bottom: 1px solid #7ed0ce;
+
+    padding-bottom: 3px;
+}
+
+
+/* ------------------------------
+   FOOTER
+-------------------------------- */
+
+footer {
+    text-align: center;
+
+    padding: 25px;
+
+    background: #0d2d37;
+
+    color: #bbcdd2;
+
+    font-size: 0.85rem;
+}
+
+
+/* ------------------------------
+   MOBILE
+-------------------------------- */
+
+@media (max-width: 750px) {
+
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        gap: 14px;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
+    }
+
+    .hero-content {
+        padding: 70px 25px;
+    }
+
+    .section {
+        padding: 75px 25px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+    }
+
+}
+
+</style>
+<style>
+
+        .case-hero {
+            background: linear-gradient(135deg, #f7fbfc, #edf7f7);
+            padding: 90px 30px 80px;
+        }
+
+        .case-hero-inner {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 35px;
+            color: #147d80;
+            font-weight: bold;
+        }
+
+        .case-hero h1 {
+            max-width: 850px;
+            font-size: clamp(2.7rem, 6vw, 4.8rem);
+            line-height: 1.08;
+            color: #123b4a;
+            margin-bottom: 22px;
+        }
+
+        .case-subtitle {
+            max-width: 780px;
+            font-size: 1.15rem;
+            color: #536771;
+            margin-bottom: 30px;
+        }
+
+        .case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 32px;
+        }
+
+        .case-tags span {
+            background: #ffffff;
+            color: #24686b;
+            border: 1px solid #dce8e9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+        }
+
+        .case-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .case-section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-section h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .case-section h3 {
+            color: #123b4a;
+            font-size: 1.35rem;
+            margin-top: 35px;
+            margin-bottom: 12px;
+        }
+
+        .case-section p {
+            color: #586a73;
+            margin-bottom: 20px;
+            font-size: 1.03rem;
+        }
+
+        .case-alt {
+            background: #f7fafb;
+        }
+
+        .case-alt-inner {
+            max-width: 1000px;
+            margin: auto;
+            padding: 75px 30px;
+        }
+
+        .case-alt-inner h2 {
+            color: #123b4a;
+            font-size: 2rem;
+            margin-bottom: 28px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #dfe8ea;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .metric-card strong {
+            display: block;
+            color: #147d80;
+            font-size: 1.7rem;
+            margin-bottom: 6px;
+        }
+
+        .metric-card span {
+            color: #61737b;
+            font-size: 0.9rem;
+        }
+
+        .finding {
+            padding: 28px;
+            border-left: 4px solid #147d80;
+            background: #f7fafb;
+            margin: 30px 0;
+        }
+
+        .finding strong {
+            display: block;
+            color: #123b4a;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            text-align: left;
+            padding: 14px;
+            border-bottom: 1px solid #dfe7e9;
+        }
+
+        .comparison-table th {
+            color: #123b4a;
+            background: #f1f6f7;
+        }
+
+        .comparison-table td {
+            color: #586a73;
+        }
+
+        .visual-block {
+            margin: 38px 0 42px;
+        }
+
+        .visual-block img {
+            display: block;
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid #dde6e9;
+            box-shadow: 0 12px 30px rgba(18, 59, 74, 0.08);
+            background: white;
+        }
+
+        .visual-caption {
+            max-width: 850px;
+            margin: 14px auto 0;
+            color: #6a7c84;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .takeaway-box {
+            background: #123b4a;
+            color: white;
+            padding: 35px;
+            border-radius: 10px;
+            margin-top: 35px;
+        }
+
+        .takeaway-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .takeaway-box p {
+            color: #d8e5e7;
+            margin-bottom: 0;
+        }
+
+        .case-footer-links {
+            text-align: center;
+            padding: 80px 30px;
+            background: #edf7f7;
+        }
+
+        .case-footer-links h2 {
+            color: #123b4a;
+            margin-bottom: 25px;
+        }
+
+        .case-footer-links .case-buttons {
+            justify-content: center;
+        }
+
+        @media (max-width: 700px) {
+
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+
+            .case-hero {
+                padding-top: 65px;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="logo">
+                JR
+            </div>
+<ul class="nav-links">
+<li>
+<a href="index.html#projects">
+                        Projects
+                    </a>
+</li>
+<li>
+<a href="index.html#skills">
+                        Skills
+                    </a>
+</li>
+<li>
+<a href="index.html#about">
+                        About
+                    </a>
+</li>
+<li>
+<a href="index.html#contact">
+                        Contact
+                    </a>
+</li>
+</ul>
+</nav>
+</header>
+<main><section class="case-hero"><div class="case-hero-inner"><a class="back-link" href="index.html#projects">← Back to Portfolio</a><p class="eyebrow">HEALTHCARE ANALYTICS CASE STUDY</p><h1>CMS Medical Care Ratings &amp; Enrollee Experience</h1><p class="case-subtitle">Are stronger CMS Medical Care ratings associated with better enrollee-reported health plan experiences? A CMS Marketplace analysis across 308 reporting units.</p><div class="case-tags"><span>Python</span><span>Pandas</span><span>MySQL</span><span>Tableau</span><span>Healthcare Analytics</span></div><div class="case-buttons"><a class="button primary-button" href="https://github.com/jreed2021/cms-health-plan-experience-analysis" rel="noopener noreferrer" target="_blank">View GitHub Repository</a><a class="button secondary-button" href="https://medium.com/@reed.janessa21/does-a-higher-rated-health-plan-actually-mean-a-better-patient-experience-5209d96bfe1c" rel="noopener noreferrer" target="_blank">Read Published Analysis</a><a class="button secondary-button" href="https://public.tableau.com/app/profile/janessa.reed/viz/CMSMedicalCareRatingsandEnrolleeExperience/Dashboard1" rel="noopener noreferrer" target="_blank">View Tableau Dashboard</a></div></div></section>
+<section class="case-section"><p class="eyebrow">PROJECT OVERVIEW</p><h2>The Research Question</h2><p>CMS Marketplace quality reporting includes Medical Care performance and enrollee-reported health plan experience. I investigated whether higher Medical Care star ratings consistently corresponded to higher adjusted experience ratings.</p><div class="finding"><strong>Analytical goal</strong>Examine the relationship between two distinct dimensions of plan performance without interpreting correlation as causation.</div></section>
+<section class="case-alt"><div class="case-alt-inner"><p class="eyebrow">DATASET</p><h2>Cleaning and Validation</h2><div class="metric-grid"><div class="metric-card"><strong>331</strong><span>QRS reporting units matched to Enrollee Survey records</span></div><div class="metric-card"><strong>23</strong><span>Excluded for missing numeric Medical Care values</span></div><div class="metric-card"><strong>308</strong><span>Final unique reporting units</span></div></div><p style="margin-top:25px">I cleaned CMS public-use data in Python, handled reporting codes such as <code>CSR-I</code>, created a reporting-unit join key, checked overlap, and validated a one-to-one merge. The 308-row analytical sample was then reconciled in MySQL.</p><div class="finding"><strong>Data quality lesson</strong>An initial MySQL import loaded only 298 rows because CMS-coded text values had been assigned numeric types. After correcting the import schema, the total row count and distinct reporting-unit count both equaled 308.</div></div></section>
+<section class="case-section"><p class="eyebrow">FINDING 01</p><h2>Higher Star Ratings Did Not Consistently Correspond to Better Experience</h2><p>Average adjusted enrollee experience scores varied across Medical Care star ratings rather than increasing steadily.</p><table class="comparison-table"><thead><tr><th>Medical Care Rating</th><th>Mean Adjusted Experience Score</th></tr></thead><tbody><tr><td>1 star</td><td>73.76</td></tr><tr><td>2 stars</td><td>73.43</td></tr><tr><td>3 stars</td><td>71.08</td></tr><tr><td>4 stars</td><td>70.17</td></tr><tr><td>5 stars</td><td>73.45</td></tr></tbody></table><div class="finding"><strong>Interpretation</strong>Plans with higher Medical Care ratings did not necessarily receive the highest average adjusted enrollee experience scores in this dataset.</div></section>
+<section class="case-alt"><div class="case-alt-inner"><p class="eyebrow">FINDING 02</p><h2>Weak Negative Correlations</h2><div class="metric-grid"><div class="metric-card"><strong>−0.132</strong><span>Pearson correlation</span></div><div class="metric-card"><strong>−0.159</strong><span>Spearman correlation</span></div><div class="metric-card"><strong>−0.151</strong><span>Experience-score skewness</span></div></div><p style="margin-top:25px">Both correlation measures indicated weak negative associations between Medical Care scores and adjusted health plan ratings. This does not mean higher Medical Care performance caused worse enrollee experience; the measures describe different aspects of plan performance.</p></div></section>
+<section class="case-section"><p class="eyebrow">FINDING 03</p><h2>Investigating Differences Between Performance and Experience</h2><p>Several reporting units with 4- or 5-star Medical Care ratings showed comparatively large gaps between Medical Care scores and enrollee experience scores. I used gap calculations to identify units worth closer review, not as a standard that scores should be identical.</p><div class="visual-block"><img alt="CMS Medical Care Ratings and Enrollee Experience Tableau dashboard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.textContent='Dashboard image unavailable here; open the live Tableau dashboard using the link below.'" src="https://raw.githubusercontent.com/jreed2021/cms-health-plan-experience-analysis/main/visuals/cms_health_plan_dashboard.png"/><p class="visual-caption">Project dashboard preview from the GitHub repository.</p></div><div class="case-buttons"><a class="button secondary-button" href="https://public.tableau.com/app/profile/janessa.reed/viz/CMSMedicalCareRatingsandEnrolleeExperience/Dashboard1" rel="noopener noreferrer" target="_blank">Explore Interactive Tableau Dashboard</a></div></section>
+<section class="case-alt"><div class="case-alt-inner"><p class="eyebrow">METHODOLOGY</p><h2>Python → MySQL → Tableau</h2><h3>Python: intake, cleaning and exploratory analysis</h3><p>Reviewed data types, duplicates and missingness; converted relevant fields to numeric values; created <code>REPORTING_UNIT_ID</code>; validated the merge; and calculated descriptive statistics, skewness and correlations.</p><h3>MySQL: verification and comparisons</h3><p>Reconciled row counts and unique reporting units, summarized experience by Medical Care rating, reviewed plan types and state-level averages using a minimum sample-size rule, and calculated score differences.</p><h3>Tableau: communication</h3><p>Built views of average experience by Medical Care rating, Medical Care score versus experience with a trend line, and the largest gaps among 4- and 5-star reporting units. The reconciled CSV served as the Tableau Public data source.</p></div></section>
+<section class="case-section"><p class="eyebrow">CONCLUSION</p><h2>Medical Care and Enrollee Experience Capture Different Dimensions</h2><p>The results did not show a consistent increase in enrollee-reported experience as Medical Care ratings rose. Small negative correlations and substantial differences for some highly rated reporting units suggest that clinical performance metrics and member experience should be evaluated separately.</p><div class="takeaway-box"><h3>Main takeaway</h3><p>The analysis is descriptive and observational. Correlation does not establish a causal relationship, and the score-gap measure is a screening aid rather than a performance target.</p></div><p style="margin-top:25px">Data source: <a href="https://www.cms.gov/marketplace/about/health-insurance-quality-initiatives/downloads" rel="noopener noreferrer" style="color:#147d80;text-decoration:underline" target="_blank">CMS Marketplace Quality Initiatives Downloads</a>.</p></section>
+<section class="case-footer-links"><p class="eyebrow">EXPLORE THE PROJECT</p><h2>See the full analysis</h2><div class="case-buttons"><a class="button primary-button" href="https://github.com/jreed2021/cms-health-plan-experience-analysis" rel="noopener noreferrer" target="_blank">GitHub Repository</a><a class="button secondary-button" href="https://medium.com/@reed.janessa21/does-a-higher-rated-health-plan-actually-mean-a-better-patient-experience-5209d96bfe1c" rel="noopener noreferrer" target="_blank">Published Article</a><a class="button secondary-button" href="https://public.tableau.com/app/profile/janessa.reed/viz/CMSMedicalCareRatingsandEnrolleeExperience/Dashboard1" rel="noopener noreferrer" target="_blank">Tableau Dashboard</a><a class="button secondary-button" href="index.html#projects">Back to Projects</a></div></section></main>
+<footer>
+<p>
+            © 2026 Janessa Reed | Data Analytics Portfolio
+        </p>
+</footer>
+</body>
+</html>
